@@ -1,0 +1,209 @@
+<!-- css -->
+<link rel="stylesheet" href="css/home.css">
+
+<div class="container">
+    <div class="mt-2">
+        <div class="TitleText px-auto">
+            <a href="">USYD Timetable Preferences Helper</a>
+        </div>
+    </div>
+
+    <!-- 
+        MOBILE WARNING (fix mobile also)
+    -->
+
+    <br>
+
+    <div class="row sm-0">
+        <!-- leftside -->
+        <div class="col-md-7 border border-top-0 border-right-0 border-left-0 rounded-lg preferences">
+            <form action="/formSubmission" id="searchForm" autocomplete="off">
+
+                <div class="entry input-group mb-1 border rounded-lg p-1">
+                    <!-- class name -->
+                    <span class="input-group-btn">
+                        <button class="btn btn-success btn-add mr-1" type="button">
+                            <span> <i class="fas fa-plus my-1"></i> </span>
+                        </button>
+                    </span>
+                    <input class="form-control w-50" name="name" type="text" placeholder="Class Name" required autocomplete=""/>
+                    <select name="type" class="custom-select" required>
+                        <option value="" disabled selected>Class Type</option>
+                        <option value="lecture">Lecture</option>
+                        <option value="tutorial">Tutorial</option>
+                        <option value="lab">Lab</option>
+                        <option value="prac">Prac</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <!-- class options -->
+                    <div class="OptionEntry mt-1 input-group">
+                        <div class="row">
+                            <div class="col-sm-1">
+                            </div>
+                            <div class="col-sm-3 p-1">
+                                <label class="m-0 control-label" for="multi">Day(s):</label>
+                                <select name="days" class="custom-select" id="multi" multiple required>
+                                    <option value="monday">Monday</option>
+                                    <option value="tuesday">Tuesday</option>
+                                    <option value="wednesday">Wednesday</option>
+                                    <option value="thursday">Thursday</option>
+                                    <option value="friday">Friday</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 p-1">
+                                <label class="m-0 control-label" for="startTime">Start Time:</label>
+                                <input type="text" id="startTime" name="start_time" class="form-control clockpicker goodSize" placeholder="24 Hour Time" required>
+                            </div>
+                            <div class="col-sm-3 p-1">
+                                <label class="m-0 control-label" for="endTime">End Time:</label>
+                                <input type="text" id="endTime" name="end_time" class="form-control clockpicker goodSize" placeholder="24 Hour Time" required>   
+                            </div>
+                            <div class="col-sm-2">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-warning btn-add2 mt-4" type="button">
+                                        <span> <i class="fas fa-plus my-1"></i> </span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <button form="searchForm" type="submit" class="btn btn-primary submitButton mb-2">Submit</button>
+        </div>
+
+        <!-- rightside -->
+        <div class="col-sm-5 border rounded-lg  mb-3 pb-3 results">
+            <div class="media border rounded-lg p-2 mt-3">
+                <img src="img/question-mark.png" alt="Help" class="mr-3 mt-3 rounded-circle align-self-top" style="width:60px;">
+                <div class="media-body">
+                    <h4>Help <small><i class="text-secondary">What is this?</i></small></h4>
+                    <h6>
+                        This website is meant to help you select your timetable preferences.
+                        Enter all your classes and their options on the left, and upon submission it will 
+                        generate come combinations for you to consider.
+                    </h6>
+                </div>
+            </div>
+            <div class="media border rounded-lg p-2 mt-3">
+                <img src="img/question-mark.png" alt="Help" class="mr-3 mt-3 rounded-circle align-self-top" style="width:60px;">
+                <div class="media-body">
+                    <h4>Help <small><i class="text-secondary">Where do i find my class times?</i></small></h4>
+                    <h6>
+                        For each unit, use <a class="text-info" target="_blank" href="https://web.timetable.usyd.edu.au/chooseLabel.jsp">this USYD website</a> 
+                        to get all the options for each class. Every unit may have multiple classes (such as lectures, tutorials, labs, etc),
+                        enter each class separately with its options. 
+                    </h6>
+                </div>
+            </div>
+            <div class="media border rounded-lg p-2 mt-3">
+                <img src="img/question-mark.png" alt="Help" class="mr-3 mt-3 rounded-circle align-self-top" style="width:60px;">
+                <div class="media-body">
+                    <h4>Help <small><i class="text-secondary">How do i enter my classes?</i></small></h4>
+                    <h6>
+                        <ol class="list">
+                            <li>Enter the name and type of the class.</li>
+                            <li>Fill in the options for this class by:</li>
+                                <ul class="list">
+                                    <li>Selecting the days that option is on (hold shift for multiple days).</li>
+                                    <li>Selecting the start and end time of that option (making sure you press confirm on the time picker).</li>
+                                </ul>
+                            <li>Press the yellow <span class="text-warning">+</span> button to add all the options for that class.</li>
+                            <li>Press the green <span class="text-success">+</span> button to add more classes.</li>
+                            <li>Press the blue <span class="text-primary">submit</span> button when you're done.</li>
+                        </ol>
+                        <ul class="list">
+                            <li>If a class has multiple options on the same day and time, you only need to enter one of them.</li>
+                            <li>You can press the red <span class="text-danger">-</span> button to remove an option or class at any time.</li>
+                            <li> Your final classes and options may look something like 
+                                <a class="text-info" href="" data-toggle="modal" data-target="#myModal">this</a>, for example.
+                            </li>
+                        </ul>
+                    </h6>
+                </div>
+            </div>
+            <div class="media border rounded-lg p-2 mt-3">
+                <img src="img/question-mark.png" alt="Help" class="mr-3 mt-3 rounded-circle align-self-top" style="width:60px;">
+                <div class="media-body">
+                    <h4>Help <small><i class="text-secondary">How does it generate timetables for me?</i></small></h4>
+                    <h6>
+                        With all the options you input, it will first generate all possible combinations then remove all that have class overlaps. 
+                        The remaining possibilities are scored based on 
+                        <a class="text-info" href="" data-toggle="modal" data-target="#criteriaModal">some critera</a>
+                        and you are shown those that score the highest.
+                    </h6>
+                </div>
+            </div>
+            <div class="media border rounded-lg p-2 mt-3">
+                <img src="img/question-mark.png" alt="Help" class="mr-3 mt-3 rounded-circle align-self-top" style="width:60px;">
+                <div class="media-body">
+                    <h4>Help <small><i class="text-secondary">Why do i have to enter everything manually?</i></small></h4>
+                    <h6>
+                        USYD does not offer a way for me to automatically access up to date timetabling information for every unit.
+                        So until another option becomes available, we are stuck with this.
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- bottom -->
+    <p class="bottomText text-center">
+        This tool is made by a student, for other students, its not perfect but hopefully it can help.
+        Obviously this website is not officially affiliated with or endorsed by The University of Sydney.
+    </p>
+
+    <!-- Image Modal -->
+    <div class="modal fade" id="myModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <img src="img/example.png" alt="Example">
+                    <p><br>Haven't got an exmaple pic yet but it'll be here</p>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+
+    <!-- Criteria Modal -->
+    <div class="modal fade" id="criteriaModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+        
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Scoring Criteria</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+        
+                <!-- Modal body -->
+                <div class="modal-body">
+                    The remaining possible timetables are scored based on: 
+                    <ul>
+                        <li>
+                            Amount of days that contain a class. Timetables that require to attend the least amount of days score higher.
+                        </li>
+                        <li>
+                            The start time for each day. Earlier starts are scored lower than later starts. (NOTE: The finish time for each day is not considered when scoring.)
+                        </li>
+                        <li>
+                            Timetables that lump your lectures into one day are more favourable than having your lectures spread out over the week.
+                            This is so this day may be skipped if needed and the lectures can be watched online.
+                        </li>
+                    </ul>
+                    You are only shown the highest scored as there may be hundreds of possible combinations.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/home.js"></script>

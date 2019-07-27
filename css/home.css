@@ -1,0 +1,46 @@
+.results{
+    overflow-y: scroll;
+    height: 78vh;
+}
+.preferences {
+    overflow-y: scroll;
+    height: 78vh;
+    text-align: center;
+}
+
+.media-body p {
+    padding-left: 2em;
+}
+
+.goodSize {
+    height: 35px;
+}
+#multi{
+    height: 35px;
+}
+
+.list {
+    padding-left: 18px;
+}
+
+.bottomText{
+    font-size: 6px;
+    color: lightgray;
+}
+
+.btn-link{
+    text-decoration-line: underline;
+}
+
+@media only screen and (max-width: 576px) {
+    .results{
+        overflow-y: scroll;
+        height: auto;
+        max-height: 50vh;
+    }
+    .preferences {
+        overflow-y: scroll;
+        height: auto;
+        max-height: 30vh;
+    }
+  }

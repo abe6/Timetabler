@@ -1,0 +1,14 @@
+* {
+    font-family: "Apercu", Helvetica, Arial, sans-serif;
+}
+
+.TitleText {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+}
+.TitleText a {
+    color: #ce3d20;
+    background-color: transparent; 
+    text-decoration: none;
+}
