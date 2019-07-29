@@ -7,6 +7,7 @@
 # Import bottle and site components
 #-----------------------------------------------------------------------------
 from bottle import run
+import os
 
 import model
 import view
@@ -31,4 +32,7 @@ reloader = True
 # Running the server
 #-----------------------------------------------------------------------------
 
-run(host=host, port=port, debug=debug, reloader=reloader)
+if os.environ.get('APP_LOCATION') == 'heroku':
+    run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+else:
+    run(host=host, port=port, debug=debug, reloader=reloader)
