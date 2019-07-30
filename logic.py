@@ -1,4 +1,4 @@
-import itertools, html
+import itertools, html, math
 
 def is_Collision(session, other):
 
@@ -43,7 +43,6 @@ def do_work(classes):
                 current_options.append(o)
         all_options.append(current_options)
 
-    print(all_options)
     results = list(itertools.product(*all_options))
 
     best_days = 8
@@ -63,21 +62,20 @@ def do_work(classes):
         elif len(days) == best_days:
             least_days.append(week)
 
+    # Iterates over all remaining options,
+    # compares each session to every other session in that week,
+    # only keeps the week if it does not contain a collision
     no_collisions = []
     for week in reversed(least_days):
-        # Iterates over all remaining options,
-        # compares each session to every other session in that week,
-        # removes the week if it contains a timing collision
-        try:
-            for i in range(len(week)):
-                session = week[i]
-                for j in range(i+1,len(week)):
-                    other = week[j]
-                    if not is_Collision(session, other):
-                        no_collisions.append(week)
-                        raise ValueError
-        except ValueError:
-            continue
+        safe = True
+        for i in range(len(week)):
+            session = week[i]
+            for j in range(i+1,len(week)):
+                other = week[j]
+                if is_Collision(session, other):
+                    safe = False
+        if safe:
+            no_collisions.append(week)
     
     scored = []
     max_score = 0
@@ -95,7 +93,7 @@ def do_work(classes):
             points = 0
 
             # Add the start time, later start times are more favourable
-            points += session["start"] * 2
+            points += session["start"] ** 2
 
             # Lectures are more favourable, more skipable
             if session["type"].lower() in ['lecture', "lec", "l"]:
@@ -131,7 +129,7 @@ def do_work(classes):
             variance *= x
 
         # Final score, higher is better
-        score = max(daily_points) - variance
+        score = max(daily_points) - math.sqrt(variance)
 
         weekAsList = list(week)
 
