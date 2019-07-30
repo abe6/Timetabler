@@ -31,7 +31,7 @@ $( "#submitForm" ).submit(function( event ) {
       contentType: false   // tell jQuery not to set contentType
     }).done(function (response) {
         // Process response here
-        console.log(response)
+        // console.log(response)
 
         // Empty existing results and add the new ones
         $( ".results" ).empty()

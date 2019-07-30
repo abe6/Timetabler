@@ -19,6 +19,12 @@ def display_time(time):
     time = str(time)
     return time[:-2] + ":" + time[-2:]
 
+def already_contains(item, entire):
+    for x in entire:
+        if x["days"] == item["days"] and x["start"] == item["start"]:
+            return True
+    return False
+
 def do_work(classes):
 
     response = {
@@ -26,14 +32,18 @@ def do_work(classes):
         "error": None
     }
     all_options = []
-
-    for name, class_ in classes.items():
+    for _name, class_ in classes.items():
+        current_options = []
         for o in class_["options"]:
             o["type"] = class_["type"]
             o["name"] = class_["name"]
             o["start"], o["end"] = convert_times(o["start"], o["end"])
-        all_options.append(class_["options"])
+            # Only consider if its not a dupe
+            if not already_contains(o, current_options):
+                current_options.append(o)
+        all_options.append(current_options)
 
+    print(all_options)
     results = list(itertools.product(*all_options))
 
     best_days = 8
@@ -52,10 +62,8 @@ def do_work(classes):
             least_days = [week]
         elif len(days) == best_days:
             least_days.append(week)
-        elif len(days) > best_days:
-            results.remove(week)
-            continue
 
+    no_collisions = []
     for week in reversed(least_days):
         # Iterates over all remaining options,
         # compares each session to every other session in that week,
@@ -65,8 +73,8 @@ def do_work(classes):
                 session = week[i]
                 for j in range(i+1,len(week)):
                     other = week[j]
-                    if is_Collision(session, other):
-                        least_days.remove(week)
+                    if not is_Collision(session, other):
+                        no_collisions.append(week)
                         raise ValueError
         except ValueError:
             continue
@@ -74,7 +82,7 @@ def do_work(classes):
     scored = []
     max_score = 0
     best_scorers = []
-    for week in least_days:
+    for week in no_collisions:
 
         # Keep track of points for each day
         daily_points = [0,0,0,0,0]
@@ -87,7 +95,7 @@ def do_work(classes):
             points = 0
 
             # Add the start time, later start times are more favourable
-            points += session["start"]
+            points += session["start"] * 2
 
             # Lectures are more favourable, more skipable
             if session["type"].lower() in ['lecture', "lec", "l"]:
