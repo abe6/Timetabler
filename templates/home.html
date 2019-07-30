@@ -17,59 +17,18 @@
     <div class="row sm-0">
         <!-- leftside -->
         <div class="col-md-7 border border-top-0 border-right-0 border-left-0 rounded-lg preferences">
-            <form action="/formSubmission" id="searchForm" autocomplete="off">
-
-                <div class="entry input-group mb-1 border rounded-lg p-1">
-                    <!-- class name -->
-                    <span class="input-group-btn">
-                        <button class="btn btn-success btn-add mr-1" type="button">
-                            <span> <i class="fas fa-plus my-1"></i> </span>
-                        </button>
-                    </span>
-                    <input class="form-control w-50" name="name" type="text" placeholder="Class Name" required autocomplete=""/>
-                    <select name="type" class="custom-select" required>
-                        <option value="" disabled selected>Class Type</option>
-                        <option value="lecture">Lecture</option>
-                        <option value="tutorial">Tutorial</option>
-                        <option value="lab">Lab</option>
-                        <option value="prac">Prac</option>
-                        <option value="other">Other</option>
-                    </select>
-                    <!-- class options -->
-                    <div class="OptionEntry mt-1 input-group">
-                        <div class="row">
-                            <div class="col-sm-1">
-                            </div>
-                            <div class="col-sm-3 p-1">
-                                <label class="m-0 control-label" for="multi">Day(s):</label>
-                                <select name="days" class="custom-select" id="multi" multiple required>
-                                    <option value="monday">Monday</option>
-                                    <option value="tuesday">Tuesday</option>
-                                    <option value="wednesday">Wednesday</option>
-                                    <option value="thursday">Thursday</option>
-                                    <option value="friday">Friday</option>
-                                </select>
-                            </div>
-                            <div class="col-sm-3 p-1">
-                                <label class="m-0 control-label" for="startTime">Start Time:</label>
-                                <input type="text" id="startTime" name="start_time" class="form-control clockpicker goodSize" placeholder="24 Hour Time" required>
-                            </div>
-                            <div class="col-sm-3 p-1">
-                                <label class="m-0 control-label" for="endTime">End Time:</label>
-                                <input type="text" id="endTime" name="end_time" class="form-control clockpicker goodSize" placeholder="24 Hour Time" required>   
-                            </div>
-                            <div class="col-sm-2">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-warning btn-add2 mt-4" type="button">
-                                        <span> <i class="fas fa-plus my-1"></i> </span>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+            
+            <form action="/fileSubmission" id="submitForm" method="POST" class="md-form">
+                <br>
+                <div class="custom-file mt-2">
+                    <input name="fileUpload" type="file" class="custom-file-input" multiple>
+                    <label class="custom-file-label" for="fileUpload">
+                        <span class="d-inline-block text-truncate w-75">Upload your files</span>
+                    </label>
                 </div>
+                <br> <br>
+                <button type="submit" class="btn btn-primary submitButton mb-2">Submit</button>
             </form>
-            <button form="searchForm" type="submit" class="btn btn-primary submitButton mb-2">Submit</button>
         </div>
 
         <!-- rightside -->
@@ -165,7 +124,8 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <img src="img/example.png" alt="Example">
+                    <!-- src="img/example.png" -->
+                    <img  alt="Example">
                     <p><br>Haven't got an exmaple pic yet but it'll be here</p>
                 </div>
     

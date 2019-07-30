@@ -6,3 +6,7 @@ if((screen.width < 600)) {
         " Optimisation for mobile screens is being worked on."
     )
 }
+
+$(document).ready(function () {
+    bsCustomFileInput.init()
+  })

@@ -1,18 +1,7 @@
-$( document ).ready(function() {
-
-  var entry =  $(".entry");
-  entry.clone().appendTo("#searchForm");
-  entry.find('.btn-add')
-  .removeClass('btn-add').addClass('btn-remove')
-  .removeClass('btn-warning').addClass('btn-danger')
-  .html('<span> <i class="fas fa-minus my-1"></i> </span>');
-  
-  setupTimePickers()
-});
 
 // Search form handling
 // Attach a submit handler to the form
-$( "#searchForm" ).submit(function( event ) {
+$( "#submitForm" ).submit(function( event ) {
  
     // Stop form from submitting normally
     event.preventDefault();
@@ -20,50 +9,30 @@ $( "#searchForm" ).submit(function( event ) {
     // Get some values from elements on the page:
     var $form = $(this)
     var url = $form.attr( "action" )
-    var data = {
-      "classes" : []
-    }
-      
+    var formData = new FormData($form[0]);
+
     // Clear messages and show loading
     $( ".results" ).empty().append( 
-        `<div class="media border rounded-lg p-2 mt-3">
-            <div class="spinner-border mr-3 mt-3 rounded-circle align-self-center"></div>
-            <div class="media-body">
-                <h4>Loading...</h4>
-                <p>This may take a moment.</p>
-            </div>
-        </div>`
+      `<div class="media border rounded-lg p-2 mt-3">
+          <div class="spinner-border mr-3 mt-3 rounded-circle align-self-center"></div>
+          <div class="media-body">
+              <h4>Loading...</h4>
+              <p>This may take a moment.</p>
+          </div>
+      </div>`
     );
-
-    // Iterates through all 'class' entries and builds that 'class' object
-    $(".entry").each(function() {
-      var $entry = $(this);
-      var name = $entry.find( "input[name='name']" ).val();
-      var type = $entry.find( "select[name='type']" ).val();
-      var options = [];
-
-      // Iterates through all 'options' for that class, 
-      // builds an 'options' object and adds it to the options array
-      $entry.find(".OptionEntry").each(function() {
-          var days = $(this).find( "select[name='days']" ).val();
-          var start = $(this).find( "input[name='start_time']" ).val();
-          var end = $(this).find( "input[name='end_time']" ).val();
-          options.push({"days":days, "start":start, "end":end})
-      });
-      data.classes.push({"name":name, "type":type, "options":options})
-
-    });
 
     // Send the data using a POST request
     $.ajax({
-    type: "POST",
-    url: url,
-    data: JSON.stringify(data),
-    dataType: 'json',
-    contentType: "application/json; charset=utf-8",
+      type: "POST",
+      url: url,
+      data: formData,
+      processData: false,  // tell jQuery not to process the data
+      contentType: false   // tell jQuery not to set contentType
     }).done(function (response) {
         // Process response here
-        
+        console.log(response)
+
         // Empty existing results and add the new ones
         $( ".results" ).empty()
 
@@ -78,7 +47,6 @@ $( "#searchForm" ).submit(function( event ) {
                   </div>
               </div>`
           );
-
         // Handle an empty response
         }else if(response.results.length == 0){
           $( ".results" ).append( 
@@ -93,24 +61,24 @@ $( "#searchForm" ).submit(function( event ) {
         } else {
             response.results.forEach(result => {
                 var monday = "";
-                for (let i = 0; i < result.monday.length; i++) {
-                  monday = monday + `<p>${result.monday[i]}</p>`;
+                for (let i = 0; i < result.Mon.length; i++) {
+                  monday = monday + `<p>${result.Mon[i]}</p>`;
                 }
                 var tuesday = "";
-                for (let i = 0; i < result.tuesday.length; i++) {
-                  tuesday = tuesday + `<p>${result.tuesday[i]}</p>`;
+                for (let i = 0; i < result.Tue.length; i++) {
+                  tuesday = tuesday + `<p>${result.Tue[i]}</p>`;
                 }
                 var wednesday = "";
-                for (let i = 0; i < result.wednesday.length; i++) {
-                  wednesday = wednesday + `<p>${result.wednesday[i]}</p>`;
+                for (let i = 0; i < result.Wed.length; i++) {
+                  wednesday = wednesday + `<p>${result.Wed[i]}</p>`;
                 }
                 var thursday = "";
-                for (let i = 0; i < result.thursday.length; i++) {
-                  thursday = thursday + `<p>${result.thursday[i]}</p>`;
+                for (let i = 0; i < result.Thu.length; i++) {
+                  thursday = thursday + `<p>${result.Thu[i]}</p>`;
                 }
                 var friday = "";
-                for (let i = 0; i < result.friday.length; i++) {
-                  friday = friday + `<p>${result.friday[i]}</p>`;
+                for (let i = 0; i < result.Fri.length; i++) {
+                  friday = friday + `<p>${result.Fri[i]}</p>`;
                 }
                 $( ".results" ).append( 
                   `<div class="media border rounded-lg p-2 mt-3">
@@ -130,71 +98,6 @@ $( "#searchForm" ).submit(function( event ) {
                   );
               });
         }
-
     });
   
   });
-
-// Dynamic form handling
-// https://bootsnipp.com/snippets/ykXa
-  $(function(){
-      $(document).on('click', '.btn-add', function(e){
-          e.preventDefault();
-  
-          var controlForm = $('#searchForm:first'),
-              currentEntry = $(this).parents('.entry:first'),
-              newEntry = $(currentEntry.clone()).appendTo(controlForm);
-  
-          newEntry.find('input').val('');
-          newEntry.find('.OptionEntry').not('.OptionEntry:first').remove();
-          newEntry.find('.OptionEntry .btn-remove2')
-            .removeClass('btn-remove2').addClass('btn-add2')
-            .removeClass('btn-danger').addClass('btn-warning')
-            .html('<span> <i class="fas fa-plus my-1"></i> </span>');
-
-          controlForm.find('.entry:not(:last) .btn-add')
-              .removeClass('btn-add').addClass('btn-remove')
-              .removeClass('btn-warning').addClass('btn-danger')
-              .html('<span> <i class="fas fa-minus my-1"></i> </span>');
-
-          setupTimePickers();
-      }).on('click', '.btn-remove', function(e)
-      {
-          $(this).parents('.entry:first').remove();
-  
-          e.preventDefault();
-          return false;
-      });
-  });
-
-  $(function(){
-    $(document).on('click', '.btn-add2', function(e){
-        e.preventDefault();
-
-        var controlForm = $(this).parents('.entry:first'),
-            currentEntry = $(this).parents('.OptionEntry:first'),
-            newEntry = $(currentEntry.clone()).appendTo(controlForm);
-          
-        newEntry.find('input').not("#startTime").not("#endTime").val('');
-        controlForm.find('.OptionEntry:not(:last) .btn-add2')
-            .removeClass('btn-add2').addClass('btn-remove2')
-            .removeClass('btn-warning').addClass('btn-danger')
-            .html('<span> <i class="fas fa-minus my-1"></i> </span>');
-        
-        setupTimePickers();
-    }).on('click', '.btn-remove2', function(e)
-    {
-        $(this).parents('.OptionEntry:first').remove();
-
-        e.preventDefault();
-        return false;
-    });
-});
-
-function setupTimePickers(){
-  $('.clockpicker').clockpicker({
-    donetext: 'Confirm',
-    placement: 'bottom',
-    align: 'left'
-});
-}

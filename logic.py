@@ -1,66 +1,38 @@
 import itertools, html
 
 def is_Collision(session, other):
-    for day in session[0]:
-        if day in other[0]:
-            if(max(session[1], other[1]) < min(session[2], other[2])):
+
+    for day in session["days"]:
+        if day in other["days"]:
+            if(max(session["start"], other["start"]) < min(session["end"], other["end"])):
                 return True
             else:
                 return False
     return False
 
-def formatTime(time):
-    t = '{:0>4}'.format(time)
-    return t[:2] + ':' + t[2:]
+def convert_times(start, end):
+    newStart = int(start.replace(":", ""))
+    newEnd = newStart + 100 if end == None else int(end.replace(":", ""))
+    return newStart, newEnd
 
-def checkTime(time):
-    t = '{:0>4}'.format(time)
-    hour = int(t[:2])
-    mins = int(t[2:])
-    return ((hour > 24 or hour < 0) or (mins >= 60 or mins < 0)) 
-
+def display_time(time):
+    time = str(time)
+    return time[:-2] + ":" + time[-2:]
 
 def do_work(classes):
-    classTypes = ["lecture", "tutorial", "lab", "prac", "other"]
+
     response = {
         "results": [],
         "error": None
     }
     all_options = []
 
-    for c in classes:
-        classOptions = []
-        if c["name"].strip() == "":
-            response["error"] = "Class names cannot be empty."
-            return response
-        elif c["type"] not in classTypes:
-            response["error"] = "You must choose a valid class type for all classes."
-            return response
-        else:
-            for option in c["options"]:
-                try:
-                    start = int(option["start"].replace(":", ""))
-                    end = int(option["end"].replace(":", ""))
-                except ValueError:
-                    response["error"] = "Times must be in the format hh:mm and contain only numbers."
-                    return response
-                except:
-                    response["error"] = "There is an error with your time input."
-                    return response
-                if checkTime(start) or checkTime(end):
-                    response["error"] = "Invalid time input."
-                    return response
-                if start >= end:
-                    response["error"] = "All start times must be before end times."
-                    return response
-
-                for day in option["days"]:
-                    if day not in ["monday", "tuesday", "wednesday", "thursday", "friday"]:
-                        response["error"] = "All options must only have valid days."
-                        return response 
-                #reformat option and add to list
-                classOptions.append([option["days"], start, end, html.escape(c["name"]), c["type"]])
-        all_options.append(classOptions)
+    for name, class_ in classes.items():
+        for o in class_["options"]:
+            o["type"] = class_["type"]
+            o["name"] = class_["name"]
+            o["start"], o["end"] = convert_times(o["start"], o["end"])
+        all_options.append(class_["options"])
 
     results = list(itertools.product(*all_options))
 
@@ -72,7 +44,7 @@ def do_work(classes):
         # removing the rest
         days = []
         for session in week:
-            for day in session[0]:
+            for day in session["days"]:
                 if day not in days:
                     days.append(day)
         if len(days) < best_days:
@@ -115,27 +87,28 @@ def do_work(classes):
             points = 0
 
             # Add the start time, later start times are more favourable
-            points += session[1]
+            points += session["start"]
 
             # Lectures are more favourable, more skipable
-            if session[4] == 'lecture':
+            if session["type"].lower() in ['lecture', "lec", "l"]:
                 points += 10
 
             # Add sessions points to all days the session is on
-            for day in session[0]:
-                if day == "monday":
+            for day in session["days"]:
+                day = day.lower()
+                if day == "mon":
                     daily_classes[0] += 1
                     daily_points[0] += points
-                elif day == "tuesday":
+                elif day == "tue":
                     daily_classes[1] += 1
                     daily_points[1] += points
-                elif day == "wednesday":
+                elif day == "wed":
                     daily_classes[2] += 1
                     daily_points[2] += points
-                elif day == "thursday":
+                elif day == "thu":
                     daily_classes[3] += 1
                     daily_points[3] += points
-                elif day == "friday":
+                elif day == "fri":
                     daily_classes[4] += 1
                     daily_points[4] += points
                 else:
@@ -155,7 +128,7 @@ def do_work(classes):
         weekAsList = list(week)
 
         # Sort by start time
-        weekAsList.sort(key = lambda x: x[1])
+        weekAsList.sort(key = lambda x: x["start"])
 
         # Add the score
         weekAsList.append(score)
@@ -173,19 +146,18 @@ def do_work(classes):
     #format response
     for week in best_scorers:
         days = {
-            "monday" : [],
-            "tuesday": [],
-            "wednesday": [],
-            "thursday": [],
-            "friday": []
+            "Mon" : [],
+            "Tue": [],
+            "Wed": [],
+            "Thu": [],
+            "Fri": []
         }
         
         for session in week:
             if type(session) == float:
                 continue
-            
-            s = "{}: {}-{}".format(session[3], formatTime(session[1]), formatTime(session[2]))
-            for day in session[0]:
+            s = "{}: {}-{}".format(session["name"], display_time(session["start"]), display_time(session["end"]))
+            for day in session["days"]:
                 days[day].append(s)
         response["results"].append(days)
 

@@ -6,7 +6,7 @@
     Nothing here should be stateful, if it's stateful let the database handle it
 '''
 import view
-import logic
+import logic, parser
 
 # Initialise our views, all arguments are defaults
 page_view = view.View()
@@ -18,5 +18,6 @@ page_view = view.View()
 def home_page():
     return page_view("home")
 
-def get_timetables(classes):
-    return logic.do_work(classes)
+def options(text):
+    json = parser.return_json(text)
+    return logic.do_work(json)
