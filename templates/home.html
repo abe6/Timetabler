@@ -36,48 +36,11 @@
             <div class="media border rounded-lg p-2 mt-3">
                 <img src="img/question-mark.png" alt="Help" class="mr-3 mt-3 rounded-circle align-self-top" style="width:60px;">
                 <div class="media-body">
-                    <h4>Help <small><i class="text-secondary">What is this?</i></small></h4>
+                    <h4>Help <small><i class="text-secondary">How do i use this?</i></small></h4>
                     <h6>
-                        This website is meant to help you select your timetable preferences.
-                        Enter all your classes and their options on the left, and upon submission it will 
-                        generate come combinations for you to consider.
-                    </h6>
-                </div>
-            </div>
-            <div class="media border rounded-lg p-2 mt-3">
-                <img src="img/question-mark.png" alt="Help" class="mr-3 mt-3 rounded-circle align-self-top" style="width:60px;">
-                <div class="media-body">
-                    <h4>Help <small><i class="text-secondary">Where do i find my class times?</i></small></h4>
-                    <h6>
-                        For each unit, use <a class="text-info" target="_blank" href="https://web.timetable.usyd.edu.au/chooseLabel.jsp">this USYD website</a> 
-                        to get all the options for each class. Every unit may have multiple classes (such as lectures, tutorials, labs, etc),
-                        enter each class separately with its options. 
-                    </h6>
-                </div>
-            </div>
-            <div class="media border rounded-lg p-2 mt-3">
-                <img src="img/question-mark.png" alt="Help" class="mr-3 mt-3 rounded-circle align-self-top" style="width:60px;">
-                <div class="media-body">
-                    <h4>Help <small><i class="text-secondary">How do i enter my classes?</i></small></h4>
-                    <h6>
-                        <ol class="list">
-                            <li>Enter the name and type of the class.</li>
-                            <li>Fill in the options for this class by:</li>
-                                <ul class="list">
-                                    <li>Selecting the days that option is on (hold shift for multiple days).</li>
-                                    <li>Selecting the start and end time of that option (making sure you press confirm on the time picker).</li>
-                                </ul>
-                            <li>Press the yellow <span class="text-warning">+</span> button to add all the options for that class.</li>
-                            <li>Press the green <span class="text-success">+</span> button to add more classes.</li>
-                            <li>Press the blue <span class="text-primary">submit</span> button when you're done.</li>
-                        </ol>
-                        <ul class="list">
-                            <li>If a class has multiple options on the same day and time, you only need to enter one of them.</li>
-                            <li>You can press the red <span class="text-danger">-</span> button to remove an option or class at any time.</li>
-                            <li> Your final classes and options may look something like 
-                                <a class="text-info" href="" data-toggle="modal" data-target="#myModal">this</a>, for example.
-                            </li>
-                        </ul>
+                        Use <a class="text-info" target="_blank" href="https://web.timetable.usyd.edu.au/chooseLabel.jsp">this USYD website</a> 
+                        to download your class times. After entering your unit code, right click the page and select 'save as', then choose
+                        'html only' as the format. Do this for all your units, and upload the files.
                     </h6>
                 </div>
             </div>
@@ -86,7 +49,7 @@
                 <div class="media-body">
                     <h4>Help <small><i class="text-secondary">How does it generate timetables for me?</i></small></h4>
                     <h6>
-                        With all the options you input, it will first generate all possible combinations then remove all that have class overlaps. 
+                        With all the options you give it, it will first generate all possible combinations then remove all that have class overlaps. 
                         The remaining possibilities are scored based on 
                         <a class="text-info" href="" data-toggle="modal" data-target="#criteriaModal">some critera</a>
                         and you are shown those that score the highest.
@@ -111,27 +74,6 @@
         This tool is made by a student, for other students, its not perfect but hopefully it can help.
         Obviously this website is not officially affiliated with or endorsed by The University of Sydney.
     </p>
-
-    <!-- Image Modal -->
-    <div class="modal fade" id="myModal">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <!-- src="img/example.png" -->
-                    <img  alt="Example">
-                    <p><br>Haven't got an exmaple pic yet but it'll be here</p>
-                </div>
-    
-            </div>
-        </div>
-    </div>
 
     <!-- Criteria Modal -->
     <div class="modal fade" id="criteriaModal">
