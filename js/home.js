@@ -81,7 +81,7 @@ $( "#submitForm" ).submit(function( event ) {
                   friday = friday + `<p>${result.Fri[i]}</p>`;
                 }
                 $( ".results" ).append( 
-                  `<div class="media border rounded-lg p-2 mt-3">
+                  `<div class="media border rounded-lg p-2 m-3 answer">
                       <div class="media-body">
                           <h5>MONDAY</h5>
                           ${monday}

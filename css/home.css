@@ -1,15 +1,20 @@
 .results{
     overflow-y: scroll;
-    height: 78vh;
+    overflow-x: scroll;
+    height: 55vh;
 }
 .preferences {
     overflow-y: scroll;
-    height: 78vh;
+    height: 55vh;
+    text-align: center;
+}
+.answer{
+    width: 30%;
     text-align: center;
 }
 
 .media-body p {
-    padding-left: 2em;
+    /* padding-left: 2em; */
 }
 
 .goodSize {
