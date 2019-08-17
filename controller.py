@@ -1,5 +1,4 @@
 from bottle import route, get, post, request, redirect, static_file
-import glob, os
 import model
 
 #-----------------------------------------------------------------------------
@@ -45,27 +44,12 @@ def get_index():
 @post('/fileSubmission')
 def post_form():
     # Handles the form processing
+    data = request.json
 
-    # Get files
-    files = request.files.getall("fileUpload")
-    text = ""
-    for f in files:
-        # Save the files
-        name, ext = os.path.splitext(f.filename)
-        if ext in ('.htm','.html'):
-            save_path = "tmp/"
-            if not os.path.exists(save_path):
-                os.makedirs(save_path)
-            file_path = "{path}/{file}".format(path=save_path, file=f.filename)
-            f.save(file_path)
-        
-    # read them in, then delete it
-    for filename in glob.glob(os.path.join("tmp/", '*.htm')):
-        with open(filename, "r") as f:
-            text = text + f.read()
-        os.remove(filename)
-                
+    unitCodes = data["codes"].split(",")
+    unitCodes = [x.upper().strip() for x in unitCodes]
+
     # Call the appropriate method
-    return model.options(text)
+    return model.options(unitCodes, data["semester"])
 
 

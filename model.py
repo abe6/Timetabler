@@ -18,6 +18,14 @@ page_view = view.View()
 def home_page():
     return page_view("home")
 
-def options(text):
-    json = parser.return_json(text)
-    return logic.do_work(json)
+def options(unitCodes, semester):
+    # codes should be an array of strings, and semester a single digit string e.g "2"
+    invalid_class_codes, codes_not_found, HTML = parser.return_html(unitCodes, semester)
+    
+    units = parser.return_units(HTML)
+    response = logic.do_work(units)
+
+    response["invalid"] = invalid_class_codes
+    response["notFound"] = codes_not_found
+    
+    return response

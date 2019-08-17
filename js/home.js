@@ -9,11 +9,14 @@ $( "#submitForm" ).submit(function( event ) {
     // Get some values from elements on the page:
     var $form = $(this)
     var url = $form.attr( "action" )
-    var formData = new FormData($form[0]);
+    var formData = {
+        "codes" : $form.find( "input[name='codes']" ).val(),
+        "semester" : $form.find( "select[name='semester']" ).val()
+      };
 
     // Clear messages and show loading
     $( ".results" ).empty().append( 
-      `<div class="media border rounded-lg p-2 mt-3">
+      `<div class="media border rounded-lg p-2 m-3 w-100">
           <div class="spinner-border mr-3 mt-3 rounded-circle align-self-center"></div>
           <div class="media-body">
               <h4>Loading...</h4>
@@ -26,31 +29,28 @@ $( "#submitForm" ).submit(function( event ) {
     $.ajax({
       type: "POST",
       url: url,
-      data: formData,
-      processData: false,  // tell jQuery not to process the data
-      contentType: false   // tell jQuery not to set contentType
+      data: JSON.stringify(formData),
+      dataType: 'json',
+      contentType: "application/json",
     }).done(function (response) {
         // Process response here
-        // console.log(response)
 
         // Empty existing results and add the new ones
         $( ".results" ).empty()
+        $( ".errors" ).empty()
 
-        // Handle a response containing an error
-        if(response.error != null){
-          $( ".results" ).append(
-              `<div class="media border rounded-lg p-2 mt-3">
-                <img src="img/exclamation.png" alt="oops" class="mr-3 mt-3 rounded-circle align-self-top" style="width:60px;">
-                  <div class="media-body">
-                      <h4>ERROR <small><i class="text-secondary">An error has occurred:</i></small></h4>
-                      <h6>${response.error}</h6>
-                  </div>
-              </div>`
-          );
+        // Display code errors
+        if(response.invalid.length != 0){
+          $(".errors").append(`<p>Invalid unit codes: ${response.invalid.join(", ")}</p>`)
+        }
+        if(response.notFound.length != 0){
+          $(".errors").append(`<p>Unit codes not found: ${response.notFound.join(", ")}</p>`)
+        }
+
         // Handle an empty response
-        }else if(response.results.length == 0){
+        if(response.results.length == 0){
           $( ".results" ).append( 
-            `<div class="media border rounded-lg p-2 mt-3">
+            `<div class="media border rounded-lg p-2 m-3 w-100">
                 <img src="img/exclamation.png" alt="oops" class="mr-3 mt-3 rounded-circle align-self-top" style="width:60px;">
                   <div class="media-body">
                       <h4>No Results! <small><i class="text-secondary">Sorry.</i></small></h4>

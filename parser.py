@@ -19,7 +19,7 @@ def return_html(classes, semester):
     links = []
     # Checks all <a> tags and keeps the links to the ones we need
     for link in parsed_html.findAll('a', href=True):
-        unit_name = link.contents[0]
+        unit_name = link.contents[0].upper().strip()
         unit_element = link.parent.next_sibling
         unit_session = "" if unit_element == None else unit_element.text
         if(unit_name in classes) and (semester in unit_session):

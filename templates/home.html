@@ -15,54 +15,53 @@
     <br>
 
     <div class="row sm-0">
-        <!-- leftside -->
+        <!-- top section -->
         <div class="row h-25 w-100 preferences">
             
             <form action="/fileSubmission" id="submitForm" method="POST" class="md-form w-75 mx-auto">
-                <br>
-                <div class="custom-file mt-2 w-100">
-                    <input name="fileUpload" type="file" class="custom-file-input" multiple>
-                    <label class="custom-file-label" for="fileUpload">
-                        <span class="d-inline-block text-truncate w-75">Upload your files</span>
-                    </label>
+                
+                <div class="form-row">
+                    <div class="col-10">
+                        <input type="text" class="form-control" name="codes" placeholder="e.g CHEM1111, SOFT2222" required>
+                        <small class="form-text text-muted">
+                            Input unit codes, seperated by a comma.
+                        </small>
+                    </div>
+                    <div class="col">
+                        <select class="form-control" name="semester">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                        </select>
+                        <small class="form-text text-muted">
+                            Select Semester
+                        </small>
+                    </div>
                 </div>
-                <br> <br>
                 <button type="submit" class="btn btn-primary submitButton mb-2">Submit</button>
             </form>
+            <div class="errors"></div>
         </div>
 
-        <!-- rightside -->
+        <!-- bottom section -->
         <div class="row border rounded-lg  mb-3 pb-3 results">
-            <div class="media border rounded-lg p-2 m-3">
+            <div class="media border rounded-lg p-2 m-3 w-100">
                 <img src="img/question-mark.png" alt="Help" class="mr-3 mt-3 rounded-circle align-self-top" style="width:60px;">
                 <div class="media-body">
                     <h4>Help <small><i class="text-secondary">How do i use this?</i></small></h4>
                     <h6>
-                        Use <a class="text-info" target="_blank" href="https://web.timetable.usyd.edu.au/chooseLabel.jsp">this USYD website</a> 
-                        to download your class times. After entering your unit code, right click the page and select 'save as', then choose
-                        'html only' as the format. Do this for all your units, and upload the files.
+                        njnrlenvyjgbkhnwifnelk
                     </h6>
                 </div>
             </div>
-            <div class="media border rounded-lg p-2 m-3">
+            <div class="media border rounded-lg p-2 m-3 w-100">
                 <img src="img/question-mark.png" alt="Help" class="mr-3 mt-3 rounded-circle align-self-top" style="width:60px;">
                 <div class="media-body">
                     <h4>Help <small><i class="text-secondary">How does it generate timetables for me?</i></small></h4>
                     <h6>
-                        With all the options you give it, it will first generate all possible combinations then remove all that have class overlaps. 
+                        It will first generate all possible combinations of your classes, then remove all that have class overlaps. 
                         The remaining possibilities are scored based on 
                         <a class="text-info" href="" data-toggle="modal" data-target="#criteriaModal">some critera</a>
                         and you are shown those that score the highest.
-                    </h6>
-                </div>
-            </div>
-            <div class="media border rounded-lg p-2 m-3">
-                <img src="img/question-mark.png" alt="Help" class="mr-3 mt-3 rounded-circle align-self-top" style="width:60px;">
-                <div class="media-body">
-                    <h4>Help <small><i class="text-secondary">Why do i have to enter everything manually?</i></small></h4>
-                    <h6>
-                        USYD does not offer a way for me to automatically access up to date timetabling information for every unit.
-                        So until another option becomes available, we are stuck with this.
                     </h6>
                 </div>
             </div>
