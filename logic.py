@@ -12,14 +12,7 @@ def is_Collision(classA, classB):
                 return True
     return False
 
-# Converts times from strings in the format hh:mm to an int with format hhmm
-# If there is also no end time given, end time is set to an hour after start time (+ 100 on the int)
-def convert_times(start, end):
-    newStart = int(start.replace(":", ""))
-    newEnd = newStart + 100 if end == None else int(end.replace(":", ""))
-    return newStart, newEnd
-
-# Converts that int time back to string format hh:mm
+# Converts int time to string in format hh:mm
 def display_time(time):
     time = str(time)
     return time[:-2] + ":" + time[-2:]
@@ -36,21 +29,12 @@ def already_contains(item, wholeset):
 """
     MAIN FUNCTION CALLED BY THE FLASK APP
 """
-def do_work(classes):
+def do_work(units):
 
-    # Goes through all the classes, cleans up the options for that class and adds them to an array
-    # Adds that array to all_options, which becomes an array of option arrays
     all_options = []
-    for _name, class_ in classes.items():
-        current_options = []
-        for o in class_["options"]:
-            o["type"] = class_["type"]
-            o["name"] = class_["name"]
-            o["start"], o["end"] = convert_times(o["start"], o["end"])
-            # Only consider if its not a dupe
-            if not already_contains(o, current_options):
-                current_options.append(o)
-        all_options.append(current_options)
+    for unit in units:
+        for c in unit.classes:
+            all_options.append(c.options)
 
     # Generate all combinations of options
     results = list(itertools.product(*all_options))
