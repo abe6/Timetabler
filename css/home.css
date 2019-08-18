@@ -1,6 +1,7 @@
-.bottomSection{
+.tab-content{
     overflow-y: scroll;
     height: 55vh;
+    width: 100%
 }
 
 .bottomText{

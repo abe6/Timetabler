@@ -14,16 +14,11 @@ $( "#submitForm" ).submit(function( event ) {
         "semester" : $form.find( "select[name='semester']" ).val()
       };
 
-    // Clear messages and show loading
-    $( ".results" ).empty().append( 
-      `<div class="media border rounded-lg p-2 m-3 w-100">
-          <div class="spinner-border mr-3 mt-3 rounded-circle align-self-center"></div>
-          <div class="media-body">
-              <h4>Loading...</h4>
-              <p>This may take a moment.</p>
-          </div>
-      </div>`
-    );
+    // Clear existing content and show loading
+    // TODO:
+    $( ".nav-tabs" ).empty()
+    $( ".tab-content" ).empty()
+    $( ".errors" ).empty()
 
     // Send the data using a POST request
     $.ajax({
@@ -56,19 +51,23 @@ $( "#submitForm" ).submit(function( event ) {
           console.log(response)
           response.results.forEach((result, index) => {
                 
-            // Add tab
-            $( ".nav-tabs" ).append(`<li class="nav-item">
-            <a class="nav-link" role="tab" data-toggle="tab" href="#${index}">Result #${index + 1}</a>
-            </li>`)
+            var nextTab = $(".nav-tabs").children().length;
 
-            // Add content
-            $( ".tab-content" ).append(`<div role="tabpanel" class="tab-pane fade" id="${index}"><br><br>
-            <p>${result.Mon}    #${index+1}</p>
-            </div>`)
+            // create the tab
+            $(` <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#tab${nextTab}">
+                Result ${index+1} </a></li>`).appendTo('.nav-tabs');
+        
+            // create the tab content
+            $(`<div class="tab-pane container fade" id="tab${nextTab}">
+                ${result.Mon}  </div>`).appendTo('.tab-content');
+        
+            // make the new tab active
+            $('#tabs a:last').tab('show');
 
           });
-          $( ".nav-tabs" ).find( "a[href='#0']" ).addClass("active")
-          $( ".tab-content" ).find( "div[id='0']" ).removeClass("fade").addClass("active")
+          $( ".nav-tabs" ).find( "a[href='#tab0']" ).addClass("active")
+          $( ".tab-content" ).find( "div[id='tab0']" ).addClass("show active")
         }
     });
   

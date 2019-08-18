@@ -13,47 +13,42 @@
     -->
 
     <br>
-
-    <div class="row sm-0">
-        <!-- top section -->
-        <div class="row h-25 w-100 preferences">
-            <form action="/fileSubmission" id="submitForm" method="POST" class="md-form w-75 mx-auto">         
-                <div class="form-row">
-                    <div class="col-10">
-                        <input type="text" class="form-control" name="codes" placeholder="e.g CHEM1111, SOFT2222" required>
-                    </div>
-                    <div class="col">
-                        <select class="form-control" name="semester">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                        </select>
-                    </div>
-                </div>
-                <br>
-                <button type="submit" class="btn btn-primary submitButton mb-2">Submit</button>
-            </form>
-        </div>
-        <div class="row">
-            <div class="errors text-left"></div>
-        </div>
-        
-        <!-- bottom section -->
-        <div class="row mb-3 pb-3 bottomSection">
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" href="#help">Help</a>
-                </li>
-            </ul>
-            
-            <!-- Tab panes -->
-            <div class="tab-content">
-                <div class="tab-pane container active" id="help"><br><br>
-                    <p>Help Info</p>
-                </div>
+    
+    <form action="/fileSubmission" id="submitForm" method="POST" class="md-form w-75 mx-auto" style="text-align: center">         
+        <div class="form-row">
+            <div class="col-10">
+                <input type="text" class="form-control" name="codes" placeholder="e.g CHEM1111, SOFT2222" required>
+            </div>
+            <div class="col">
+                <select class="form-control" name="semester">
+                    <option value="1">Semester 1</option>
+                    <option value="2">Semester 2</option>
+                </select>
             </div>
         </div>
+        <br>
+        <button type="submit" class="btn btn-primary submitButton mb-2">Submit</button>
+    </form>
+    
+    <div class="row">
+        <div class="errors text-left"></div>
     </div>
+    
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs nav-justified">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#help">Help</a>
+        </li>
+    </ul>
+    
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane container fade show active" id="help"><br>
+            <p>Help</p>
+        </div>
+    </div>
+        
+   
 
     <!-- bottom -->
     <p class="bottomText text-center">
