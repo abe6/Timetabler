@@ -1,31 +1,6 @@
-.results{
-    overflow-y: scroll;
-    overflow-x: scroll;
-    height: 55vh;
-}
-.preferences {
+.bottomSection{
     overflow-y: scroll;
     height: 55vh;
-    text-align: center;
-}
-.answer{
-    width: 30%;
-    text-align: center;
-}
-
-.media-body p {
-    /* padding-left: 2em; */
-}
-
-.goodSize {
-    height: 35px;
-}
-#multi{
-    height: 35px;
-}
-
-.list {
-    padding-left: 18px;
 }
 
 .bottomText{
@@ -38,14 +13,8 @@
 }
 
 @media only screen and (max-width: 576px) {
-    .results{
+    .bottomSection{
         overflow-y: scroll;
-        height: auto;
         max-height: 50vh;
-    }
-    .preferences {
-        overflow-y: scroll;
-        height: auto;
-        max-height: 30vh;
     }
   }
