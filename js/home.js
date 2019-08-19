@@ -14,11 +14,17 @@ $( "#submitForm" ).submit(function( event ) {
         "semester" : $form.find( "select[name='semester']" ).val()
       };
 
-    // Clear existing content and show loading
-    // TODO:
+    // Clear existing content
     $( ".nav-tabs" ).empty()
     $( ".tab-content" ).empty()
     $( ".errors" ).empty()
+    // Show loading
+    $(` <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#loading">
+    Your results are loading... </a></li>`).appendTo('.nav-tabs');
+    $(`<div class="tab-pane container active text-center" id="loading"><br>
+        <div class="spinner-grow text-muted"></div><br>
+        It may take a while to generate the results. Hang in there.  </div>`).appendTo('.tab-content');
 
     // Send the data using a POST request
     $.ajax({
@@ -34,18 +40,24 @@ $( "#submitForm" ).submit(function( event ) {
         $( ".nav-tabs" ).empty()
         $( ".tab-content" ).empty()
         $( ".errors" ).empty()
+        
 
         // Display code errors
         if(response.invalid.length != 0){
           $(".errors").append(`<p>Invalid unit codes: ${response.invalid.join(", ")}</p>`)
         }
         if(response.notFound.length != 0){
-          $(".errors").append(`<p>Unit codes not found: ${response.notFound.join(", ")}</p>`)
+          $(".errors").append(`<p>Units not found running during semester ${formData.semester}: ${response.notFound.join(", ")}</p>`)
         }
 
         // Handle an empty response
         if(response.results.length == 0){
-          console.log("ERROR")
+          $(` <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#error">
+          Oh no...</a></li>`).appendTo('.nav-tabs');
+          $(`<div class="tab-pane container active text-center" id="error"><br>
+          Unable to generate any timetables. Did you select the right semester?</div>`).appendTo('.tab-content');
+
         } else {
           // Add results
           console.log(response)
@@ -59,8 +71,18 @@ $( "#submitForm" ).submit(function( event ) {
                 Result ${index+1} </a></li>`).appendTo('.nav-tabs');
         
             // create the tab content
-            $(`<div class="tab-pane container fade" id="tab${nextTab}">
-                ${result.Mon}  </div>`).appendTo('.tab-content');
+            var content = ""; 
+            for (const [day, classes] of Object.entries(result)) {
+              content += `<div class="col border border-top-0 border-bottom-0 border-right-0">
+                  <h4>${day}</h4>`
+              for (const c of classes){
+                content += "<p>"+c+"</p>"
+              } 
+              content += "</div>"
+            }
+            $(`<div class="tab-pane container fade" id="tab${nextTab}"><br>
+                <div class="row mx-1 p-1 text-center"> ${content} </div>
+                </div>`).appendTo('.tab-content');
         
             // make the new tab active
             $('#tabs a:last').tab('show');

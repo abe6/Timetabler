@@ -33,7 +33,7 @@ def do_work(units):
 
     all_options = []
     for unit in units:
-        for c in unit.classes:
+        for c in unit.classes: 
             all_options.append(c.options)
 
     # Generate all combinations of options

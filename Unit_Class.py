@@ -1,9 +1,10 @@
 class Unit_Class(object):
 
-    def __init__(self, name, typee):
-        self.name = name
+    def __init__(self, unit, name, typee):
+        self.name = unit.code + " " + name
         self.typee = typee
         self.options = []
+        self.unit = unit
     
     def __repr__(self):
         string = """
@@ -18,7 +19,8 @@ class Unit_Class(object):
     
     def add_option(self, days, start, end):
         op = {"days": days, "start": self.convert_times(start), 
-            "end": self.convert_times(end), "name": self.name, "type": self.typee}
+            "end": self.convert_times(end), "type": self.typee, 
+            "name": self.name }
         for o in self.options:
             if (o["days"] == op["days"]) and (o["start"] == op["start"]) and (o["end"] == op["end"]):
                 return

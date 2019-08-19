@@ -32,7 +32,7 @@ class Unit_of_Study(object):
 
     def add_class(self, table):
         info = table.find('td').text.split()
-        new_class = Unit_Class(info[1], " ".join(info[2:]))
+        new_class = Unit_Class(self, info[1], " ".join(info[2:]))
 
         options = table.find_all("table")
         cleaned = []
