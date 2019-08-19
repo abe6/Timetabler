@@ -160,8 +160,10 @@ def do_work(units):
     
     # Begin to formulate the response that gets passed back to the site via AJAX.
     response = {
-        "results": []
+        "results": [],
+        "units": []
     }
+    # Add weeks
     for week in best_scorers:
         week_final = {
             "Mon" : [],
@@ -183,6 +185,9 @@ def do_work(units):
                 week_final[day].append(s)
         # The week_final is added to the response
         response["results"].append(week_final)
+    # Add unit information
+    for unit in units:
+        response["units"].append(unit.getInfo())
 
     # All done yay
     return response

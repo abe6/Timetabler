@@ -39,58 +39,63 @@ $( "#submitForm" ).submit(function( event ) {
         // Empty existing results and add the new ones
         $( ".nav-tabs" ).empty()
         $( ".tab-content" ).empty()
-        $( ".errors" ).empty()
         
 
-        // Display code errors
-        if(response.invalid.length != 0){
-          $(".errors").append(`<p>Invalid unit codes: ${response.invalid.join(", ")}</p>`)
-        }
-        if(response.notFound.length != 0){
-          $(".errors").append(`<p>Units not found running during semester ${formData.semester}: ${response.notFound.join(", ")}</p>`)
-        }
+        // Add info panel
+        var invalid = response.invalid.length != 0 ? `<p>Invalid unit codes: ${response.invalid.join(", ")}</p>` : ""
+        var notFound = response.notFound.length != 0 ? `<p>Units not found running during semester ${formData.semester}: ${response.notFound.join(", ")}</p>` : ""
+        var empty = response.results.length == 0 ? "<p>Unable to generate any timetables. Did you select the right semester?</p>" : ""
+        var info = ""
+        for(var i = 0; i < response.units.length; i++){
+          var x = response.units[i]
+          info += `<div class="col border border-top-0 border-bottom-0">
+          <h4>${x[1]}</h4>
+          <p>${x[0]}</p>
+          <p>${x[2]}</p>
+          <p>${x[3]}</p>
+          <p>${x[4]}</p>
+          </div>` }
+        $(` <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#info">
+          Info</a></li>`).appendTo('.nav-tabs');
+        $(`<div class="tab-pane container active" id="info"><br>
+            ${invalid}
+            ${notFound}
+            ${empty}
+            <div class="row mx-1 p-1"> 
+            ${info}
+            </div>
+          </div>`).appendTo('.tab-content');
 
-        // Handle an empty response
-        if(response.results.length == 0){
+        // Add results
+        console.log(response)
+        response.results.forEach((result, index) => {
+              
+          var nextTab = $(".nav-tabs").children().length;
+
+          // create the tab
           $(` <li class="nav-item">
-          <a class="nav-link active" data-toggle="tab" href="#error">
-          Oh no...</a></li>`).appendTo('.nav-tabs');
-          $(`<div class="tab-pane container active text-center" id="error"><br>
-          Unable to generate any timetables. Did you select the right semester?</div>`).appendTo('.tab-content');
-
-        } else {
-          // Add results
-          console.log(response)
-          response.results.forEach((result, index) => {
-                
-            var nextTab = $(".nav-tabs").children().length;
-
-            // create the tab
-            $(` <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#tab${nextTab}">
-                Result ${index+1} </a></li>`).appendTo('.nav-tabs');
+              <a class="nav-link" data-toggle="tab" href="#tab${nextTab}">
+              Result ${index+1} </a></li>`).appendTo('.nav-tabs');
+      
+          // create the tab content
+          var content = ""; 
+          for (const [day, classes] of Object.entries(result)) {
+            content += `<div class="col border border-top-0 border-bottom-0 border-right-0">
+                <h4>${day}</h4>`
+            for (const c of classes){
+              content += "<p>"+c+"</p>"
+            } 
+            content += "</div>"
+          }
+          $(`<div class="tab-pane container fade" id="tab${nextTab}"><br>
+              <div class="row mx-1 p-1 text-center"> ${content} </div>
+              </div>`).appendTo('.tab-content');
+      
+          // Activate the tab
+          $('#tabs a:last').tab('show');
+        });
         
-            // create the tab content
-            var content = ""; 
-            for (const [day, classes] of Object.entries(result)) {
-              content += `<div class="col border border-top-0 border-bottom-0 border-right-0">
-                  <h4>${day}</h4>`
-              for (const c of classes){
-                content += "<p>"+c+"</p>"
-              } 
-              content += "</div>"
-            }
-            $(`<div class="tab-pane container fade" id="tab${nextTab}"><br>
-                <div class="row mx-1 p-1 text-center"> ${content} </div>
-                </div>`).appendTo('.tab-content');
-        
-            // make the new tab active
-            $('#tabs a:last').tab('show');
-
-          });
-          $( ".nav-tabs" ).find( "a[href='#tab0']" ).addClass("active")
-          $( ".tab-content" ).find( "div[id='tab0']" ).addClass("show active")
-        }
     });
   
   });

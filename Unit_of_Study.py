@@ -30,6 +30,9 @@ class Unit_of_Study(object):
         self.campus, self.classes)
         return string
 
+    def getInfo(self): 
+        return [self.name, self.code, self.semester, self.delivery_mode, self.campus]
+
     def add_class(self, table):
         info = table.find('td').text.split()
         new_class = Unit_Class(self, info[1], " ".join(info[2:]))
