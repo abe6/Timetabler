@@ -66,6 +66,8 @@ $( "#submitForm" ).submit(function( event ) {
             ${info}
             </div>
           </div>`).appendTo('.tab-content');
+        
+        if(empty.length !== 0){return;}
 
         // Add results
         console.log(response)

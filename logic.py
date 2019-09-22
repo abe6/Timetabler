@@ -3,6 +3,11 @@ import itertools, html, math
 """
     HELPER FUNCTIONS
 """
+def avg(array):
+    non_zero = [x for x in array if x !=0]
+    return sum(non_zero) / len(non_zero) 
+
+
 # If classA and classB are on the same days, checks to make sure their times do not overlap.
 # Returns true if there is a collision.
 def is_Collision(classA, classB):
@@ -77,67 +82,59 @@ def do_work(units):
     best_scorers = []
     for week in no_collisions:
 
+        # Used for converting day into its array index
+        indexes = {"mon":0, "tue":1, "wed":2, "thu":3, "fri":4}
         # Tracks points for each day in the week [mon, tues, wed, thur, fri]
         daily_points = [0,0,0,0,0]
         # Tracks how many classes per day [mon, tues, wed, thur, fri]
         daily_classes = [0,0,0,0,0]
+        # Tracks the lowest start time for each day
+        start_times = [2400,2400,2400,2400,2400]
 
         # Here each class is scored based on its start time and class type
         for session in week:
-            # Points for this session
-            points = 0
-
-            # Add the start time, later start times are more favourable
-            points += session["start"] ** 2
 
             # Lectures are favourbale and score higher because they are skipable lol
-            if session["type"].lower() in ['lecture', "lec", "l"]:
-                points += 100
+            lessonType = session["type"].lower()
+            lecturePoints = 0
+            for symbol in ['lecture', "lec"]:
+                if (symbol in lessonType) or (lessonType in ["l"]):
+                    lecturePoints = 10
+                    break
+            if lecturePoints == 0:
+                lecturePoints = -10
 
-            # Add this sessions points to the day(s) it is on 
-            # and also +1 classes for that day
+            # For each day this class is on,
+            # that day gets the lecture points &
+            # that day gets +1 class count &
+            # start time gets assessed to find the earliest for each day.
             for day in session["days"]:
-                day = day.lower()
-                if day == "mon":
-                    daily_classes[0] += 1
-                    daily_points[0] += points
-                elif day == "tue":
-                    daily_classes[1] += 1
-                    daily_points[1] += points
-                elif day == "wed":
-                    daily_classes[2] += 1
-                    daily_points[2] += points
-                elif day == "thu":
-                    daily_classes[3] += 1
-                    daily_points[3] += points
-                elif day == "fri":
-                    daily_classes[4] += 1
-                    daily_points[4] += points
-                else:
-                    print("DAY ERROR: " + day)
-                    exit(0)
+                index = indexes[day.lower()]
+                daily_points[index] += lecturePoints
+                daily_classes[index] += 1
+                if session["start"] < start_times[index]:
+                    start_times[index] = session["start"]
         
-        # Measure of how spread out the classes are over the days
-        # Smaller variance is more favourable
+        
         """
-            idk if this is even right but its all i could come up with, 
-            basically non-zero is daily_classes but with all the 0's removed, so it may look like [2,4,5]. 
-            These numbers are then all multiplied by eachother. The idea is that weeks with the same number
-            of classes can get different scores based on if the classes are bulked into one day or not. eg 
-            [3, 3, 3, 3, 3] = 243, [5, 1, 4, 2, 3] = 120, therefore the second one is more favourable, 
-            even though they both have the same number of classes.
+            explain load calculation (microstates) N!/n1!n2!...
+            smaller load spread is better
         """
-        non_zero = [float(v) for v in daily_classes if v != 0]
-        variance = 1
-        for x in non_zero:
-            variance *= x
+        numerator = math.factorial(sum(daily_classes))
+        denominator = (math.factorial(daily_classes[0]) 
+                        * math.factorial(daily_classes[1]) 
+                        * math.factorial(daily_classes[2]) 
+                        * math.factorial(daily_classes[3]) 
+                        * math.factorial(daily_classes[4]))
+        loadSpread = math.log( numerator / denominator ) + 1
 
-        # Final score, higher is better, therefore you want a high daily_point and low variance
+
         """
-            maybe max(daily_points) should change to a sum or maybe a product?
-            i feel like i had that before but it didn't work i don't remember why - needs more investigation
+            Final score, higher is better, therefore you want low loadSpread and
+            the highest day score and a high average start time.
+            Day score weighs more than start_time.
         """
-        score = max(daily_points) - (variance ** 2)
+        score =( max(daily_points)**2 + avg(start_times) )/ loadSpread 
 
         # Convert the week (currently a tuple) to a list so it can be mutated
         weekAsList = list(week)
@@ -146,6 +143,8 @@ def do_work(units):
         weekAsList.sort(key = lambda x: x["start"])
 
         # Add the score to the end of the week
+        ## weekAsList.append(start_times)
+        ## weekAsList.append(daily_points)
         weekAsList.append(score)
         
         # Keep track of those that have the highest score
@@ -165,6 +164,7 @@ def do_work(units):
     }
     # Add weeks
     for week in best_scorers:
+        ## print(week[-1], week[-2], avg(week[-2]), avg(week[-3]))
         week_final = {
             "Mon" : [],
             "Tue": [],
@@ -174,7 +174,7 @@ def do_work(units):
         }
         # Every class is formated then added to the relevant days
         for session in week:
-            if type(session) == float:
+            if type(session) not in [dict]:
                 continue
                 
             s = "{}: {}-{}".format(session["name"], display_time(session["start"]), display_time(session["end"]))
