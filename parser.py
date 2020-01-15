@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import ssl, urllib.request, re
 from Unit_of_Study import Unit_of_Study
 
-WEBSITE_URL = "https://www.timetable.usyd.edu.au/uostimetables/2019/"
+WEBSITE_URL = "https://www.timetable.usyd.edu.au/uostimetables/2020/"
 
 def return_html(classes, semester):
     # Fetches the selection page
