@@ -42,9 +42,10 @@ $( "#submitForm" ).submit(function( event ) {
         
 
         // Add info panel
+        // Populate with errors if they exist
         var invalid = response.invalid.length != 0 ? `<p>Invalid unit codes: ${response.invalid.join(", ")}</p>` : ""
         var notFound = response.notFound.length != 0 ? `<p>Units not found running during semester ${formData.semester}: ${response.notFound.join(", ")}</p>` : ""
-        var empty = response.results.length == 0 ? "<p>Unable to generate any timetables. Did you select the right semester?</p>" : ""
+        var empty = response.results.length == 0 ? "<p>Unable to generate any timetables.</p><p>Did you select the right semester?</p><p>Are all your unit codes correct?</p>" : ""
         var info = ""
         for(var i = 0; i < response.units.length; i++){
           var x = response.units[i]
@@ -83,7 +84,7 @@ $( "#submitForm" ).submit(function( event ) {
           // create the tab content
           var content = ""; 
           for (const [day, classes] of Object.entries(result)) {
-            content += `<div class="col border border-top-0 border-bottom-0 border-right-0">
+            content += `<div class="col border border-top-0 border-bottom-0">
                 <h4>${day}</h4>`
             for (const c of classes){
               content += "<p>"+c+"</p>"

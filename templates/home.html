@@ -43,9 +43,32 @@
     
     <!-- Tab panes -->
     <div class="tab-content">
-        <div class="tab-pane container fade active show" id="help"><br>
-            <p>The site is currently working for 2020.</p>
-            <p>Simply enter the codes for your units of study in a comma delimitated list and hit submit.</p>
+        <div class="tab-pane container fade active show" id="help">
+            <div class="row mx-1 p-1 text-center">
+                <div class="col border border-top-0 border-bottom-0 border-right-0 border-left-0">
+                    <h4>Welcome!</h4>
+                    <p>The site is currently working for 2020.</p>
+                    <p>Simply enter the codes for your units of study in a comma delimitated list and hit submit.</p>
+                </div>
+                <div class="col border border-top-0 border-bottom-0 border-right-0">
+                    <h4>How does it work?</h4>
+                    <p>
+                        The program currently tries to present to you the timetables that it finds to best fit the given citeria.
+                        This criteria has been tailored to produce timetables that have as many classes as possible on a single day
+                        and leaving as many free days as possible. In this process it prioritises scheduling non lectures, as lectures 
+                        can be placed on off days and be skipped for online viewing. 
+                    </p>
+                </div>
+                <div class="col border border-top-0 border-bottom-0 border-right-0">
+                    <h4>Can i change the criteria?</h4>
+                    <p>
+                        Being able to change the criteria so that the program could produce a timetable that is perfect for you is the ultimate
+                        goal and is in the works. Hopefully it will be available soon! If you have any other feature requests let me know and 
+                        ill see if i can add it in.
+                    </p>
+                </div>
+            </div>
+            
         </div>
     </div>
         
@@ -56,38 +79,6 @@
         This tool is made by a student, for other students, its not perfect but hopefully it can help.
         Obviously this website is not officially affiliated with or endorsed by The University of Sydney.
     </p>
-
-    <!-- Criteria Modal -->
-    <div class="modal fade" id="criteriaModal">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-        
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Scoring Criteria</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-        
-                <!-- Modal body -->
-                <div class="modal-body">
-                    The remaining possible timetables are scored based on: 
-                    <ul>
-                        <li>
-                            Amount of days that contain a class. Timetables that require to attend the least amount of days score higher.
-                        </li>
-                        <li>
-                            The start time for each day. Earlier starts are scored lower than later starts. (NOTE: The finish time for each day is not considered when scoring.)
-                        </li>
-                        <li>
-                            Timetables that lump your lectures into one day are more favourable than having your lectures spread out over the week.
-                            This is so this day may be skipped if needed and the lectures can be watched online.
-                        </li>
-                    </ul>
-                    You are only shown the highest scored as there may be hundreds of possible combinations.
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 <script src="js/home.js"></script>
