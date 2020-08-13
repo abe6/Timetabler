@@ -45,7 +45,7 @@ $( "#submitForm" ).submit(function( event ) {
         // Populate with errors if they exist
         var invalid = response.invalid.length != 0 ? `<p>Invalid unit codes: ${response.invalid.join(", ")}</p>` : ""
         var notFound = response.notFound.length != 0 ? `<p>Units not found running during semester ${formData.semester}: ${response.notFound.join(", ")}</p>` : ""
-        var empty = response.results.length == 0 ? "<p>Unable to generate any timetables, sorry!.</p><p>Its not perfect many things could of gone wrong, it may be one fo the following:</p><p>- You have one or more unavoidable collisions</p>" : ""
+        var empty = response.results.length == 0 ? "<p>Unable to generate any timetables, sorry!</p><p>Its not perfect many things could of gone wrong, it may be one of the following:</p><p>- You have one or more unavoidable collisions</p>" : ""
         var info = ""
         for(var i = 0; i < response.units.length; i++){
           var x = response.units[i]

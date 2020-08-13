@@ -6,7 +6,7 @@
     Nothing here should be stateful, if it's stateful let the database handle it
 '''
 import view
-import logic, parser
+from logic import logic, parser
 
 # Initialise our views, all arguments are defaults
 page_view = view.View()
