@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 import ssl, urllib.request, re
-from Unit_of_Study import Unit_of_Study
+from .Unit_of_Study import Unit_of_Study
 
 WEBSITE_URL = "https://www.timetable.usyd.edu.au/uostimetables/2020/"
 
@@ -34,11 +34,7 @@ def return_html(classes, semester):
 
     return invalid_class_codes, codes_not_found, HTML
 
-###
-### Current issues:
-###  - doesn't work with options with multiple days
-###  - data1001 not finding lab classes? issue unknown
-###
+
 def return_units(html_array):
 
     units = []
@@ -52,8 +48,14 @@ def return_units(html_array):
         for table in all_tables:
             to_remove = table.find_all("div")
             to_remove += table.find_all("td", attrs={"colspan": "4"})
+            weeks_text = table.find_all("div", {"class": "weeks"})
             for t in to_remove:
-                t.parent.extract()
+                # Keep weeks text, but remove date breakdown and other unnecesary stuff
+                if t in weeks_text:
+                    for x in t.find_all("span"):
+                        x.extract()
+                else:
+                    t.parent.extract()
 
         # Use the first table, which is all the info, to create the unit object
         current_unit = Unit_of_Study(all_tables[0])
