@@ -34,20 +34,25 @@ class Unit_of_Study(object):
         return [self.name, self.code, self.semester, self.delivery_mode, self.campus]
 
     def add_class(self, table):
+        
         info = table.find('td').text.split()
         new_class = Unit_Class(self, info[1], " ".join(info[2:]))
 
-        
-        options = table.find_all("table")
-        cleaned = []
-        for option in options:
-            o = []
-            for row in option.find_all('tr'):
-                x = [y.get_text().strip() for y in row.find_all('td')]
-                o.append(x)
-            cleaned.append(o)
+        class_type = table.find("strong").get_text(separator=' ')
+        rows = table.find("tbody").find_all("tr", recursive=False)
 
-        for option in cleaned:
-            new_class.add_option(option)
+        for i in range(2, len(rows)):
+            row = rows[i]
+            option_code = row.find('td').get_text(separator=' ')
+            if "closed" in option_code.lower():
+                continue # Don't process options that are closed
+            option_times = []
+            for timeslot in row.find_all("tr"):
+                if len(timeslot.find_all("tr")) != 0: 
+                    continue # Skip top level rows (ones with other rows inside)
+                else: # Else add the option to the list
+                    x = [x.get_text().strip() for x in timeslot.find_all("td")]
+                    option_times.append(x)
+            new_class.add_option(class_type, option_code, option_times)
         
         self.classes.append(new_class)
